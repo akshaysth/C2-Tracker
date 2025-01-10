@@ -1,24 +1,36 @@
 # C2 Tracker
 
-Free to use IOC feed for various tools/malware. It started out for just C2 tools but has morphed into tracking infostealers and botnets as well. It uses [Shodan](https://www.shodan.io/) searches to collect the IPs. The most recent collection is always stored in `data`; the IPs are broken down by tool and there is an `all.txt`.
-
-The feed should update daily. *Actively working on making the backend more reliable*
+C2 Tracker is a free-to-use-community-driven IOC feed that uses [Shodan](https://www.shodan.io/) and [Censys](https://search.censys.io/) searches to collect IP addresses of known malware/botnet/C2 infrastructure.
 
 ## Honorable Mentions
 
-Many of the Shodan queries have been sourced from other CTI researchers:
+Many of the queries have been sourced from other CTI researchers:
 
 - [BushidoToken](https://twitter.com/BushidoToken)
 - [Michael Koczwara](https://twitter.com/MichalKoczwara)
 - [ViriBack](https://twitter.com/ViriBack)
 - [Gi7W0rm](https://twitter.com/Gi7w0rm)
-- [@Glacius_](https://twitter.com/Glacius_)
+- [Glacius_](https://twitter.com/Glacius_)
+- [corumir](https://github.com/corumir)
 
 Huge shoutout to them!
 
 Thanks to [BertJanCyber](https://twitter.com/BertJanCyber) for creating the [KQL query](https://github.com/Bert-JanP/Hunting-Queries-Detection-Rules/blob/main/Threat%20Hunting/TI%20Feed%20-%20MontySecurity%20C2%20Tracker%20All%20IPs.md) for ingesting this feed
 
 And finally, thanks to [Y_nexro](https://twitter.com/Y_NeXRo) for creating [C2Live](https://github.com/YoNixNeXRo/C2Live) in order to visualize the data
+
+## Usage
+
+The most recent collection will be stored in `data/`. The IPs are seperated by the name of the tool and there is an `all.txt` that contains all of the IPs. As it currently stands this feed updates `weekly` on Monday.
+
+### Ingestion/Alerting
+
+- If your SIEM/EDR/TIP has the ability to ingest data from a remote source than you can use the files in their raw text format. See BertJanCyber's KQL query above as an example
+- FortinetSIEM 7.2.0 added support for this intel feed - `https://docs.fortinet.com/document/fortisiem/7.2.0/release-notes/553241/whats-new-in-7-2-0`
+
+### Investigations/Historical Analysis
+
+- The repo, by its nature, has version control. This means you can search the history of the repo for when an IP was present in the results. I have used one of my other public tools, [GitHub Repo OSINT Tool](https://github.com/montysecurity/GROT), for this purpose.
 
 ## What do I track?
 
@@ -37,6 +49,15 @@ And finally, thanks to [Y_nexro](https://twitter.com/Y_NeXRo) for creating [C2Li
     - [Caldera](https://caldera.mitre.org/)
     - [Empire](https://github.com/EmpireProject/Empire)
     - [Ares](https://github.com/sweetsoftware/Ares)
+    - [Hak5 Cloud C2](https://shop.hak5.org/products/c2)
+    - [Pantegana](https://github.com/cassanof/pantegana)
+    - [Supershell](https://github.com/tdragon6/Supershell/tree/main)
+    - Poseidon C2
+    - Viper C2
+    - [UnamWebPanel](https://github.com/UnamSanctam/UnamWebPanel)
+    - [Vshell](https://github.com/veo/vshell)
+    - [Villain](https://github.com/t3l3machus/Villain)
+    - [Nimplant C2](https://github.com/chvancooten/NimPlant)
 - Malware
     - AcidRain Stealer
     - Misha Stealer (AKA Grand Misha)
@@ -63,26 +84,48 @@ And finally, thanks to [Y_nexro](https://twitter.com/Y_NeXRo) for creating [C2Li
     - Orcus RAT Trojan
     - ZeroAccess Trojan
     - HOOKBOT Trojan
+    - [RisePro Stealer](https://github.com/noke6262/RisePro-Stealer)
+    - NetBus Trojan
+    - Bandit Stealer
+    - Mint Stealer
+    - Mekotio Trojan
+    - Gozi Trojan
+    - Atlandida Stealer
+    - VenomRAT
+    - Orcus RAT
+    - DcRAT
+    - BitRAT
+    - BlackDolphin
+    - Artemis RAT
+    - Godzilla Loader
+    - Jinx Loader
+    - Netpune Loader
+    - [SpyAgent](https://www.deepinstinct.com/blog/the-russian-spyagent-a-decade-later-and-rat-tools-remain-at-risk)
 - Tools
     - [XMRig Monero Cryptominer](https://xmrig.com/)
     - [GoPhish](https://getgophish.com/)
+    - [Browser Exploitation Framework (BeEF)](https://github.com/beefproject/beef)
+    - [BurpSuite](https://portswigger.net/burp)
+    - [Hashcat](https://hashcat.net/hashcat/)
+    - [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF)
 - Botnets
-    - [7777 Botnet](https://gi7w0rm.medium.com/the-curious-case-of-the-7777-botnet-86e3464c3ffd)
+    - [7777](https://gi7w0rm.medium.com/the-curious-case-of-the-7777-botnet-86e3464c3ffd)
+    - [BlackNET](https://github.com/suriya73/BlackNET)
+    - Doxerina
+    - Scarab
 
-### Running Locally
+## Running Locally
 
-If you want to host a private version, put your Shodan API key in an environment variable called `SHODAN_API_KEY`
+If you want to host a private version, put your Shodan API key in an environment variable called `SHODAN_API_KEY`, and setup your Censys credentials in `CENSYS_API_ID` & `CENSYS_API_SECRET`
 
 ```bash
-echo SHODAN_API_KEY=API_KEY >> ~/.bashrc
-bash
 python3 -m pip install -r requirements.txt
 python3 tracker.py
 ```
 
 ## Contributing
 
-I encourage opening an issue/PR if you know of any additional Shodan searches for identifying adversary infrastructure. I will not set any hard guidelines around what can be submitted, just know, fidelity is paramount (high true/false positive ratio is the focus).
+I encourage opening an issue/PR if you know of any additional Shodan/Censys searches for identifying adversary infrastructure. I will not set any hard guidelines around what can be submitted, just know, **fidelity is paramount** (high true/false positive ratio is the focus).
 
 ## References
 
