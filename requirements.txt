@@ -6,4 +6,3 @@ zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
 idna>=3.7 # not directly required, pinned by Snyk to avoid a vulnerability
 requests>=2.32.2 # not directly required, pinned by Snyk to avoid a vulnerability
 censys
-urllib3>=2.2.2 # not directly required, pinned by Snyk to avoid a vulnerability
